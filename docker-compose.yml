@@ -1,0 +1,13 @@
+services:
+  scheduler:
+    build: .
+    command: python -m scheduler.server --host 0.0.0.0
+    ports: ["9000:9000"]
+  worker1:
+    build: .
+    command: python -m worker.worker --worker-id worker-1 --scheduler scheduler:9000 --cpu 4 --memory 4096
+    depends_on: [scheduler]
+  worker2:
+    build: .
+    command: python -m worker.worker --worker-id worker-2 --scheduler scheduler:9000 --cpu 2 --memory 2048
+    depends_on: [scheduler]
